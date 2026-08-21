@@ -70,11 +70,14 @@
 
   // ---------- TRIBUTE WALL (rendered from the database) ----------
   const tributeGrid = document.getElementById('tribute-grid');
-  if (tributeGrid) {
-    fetch('/api/tributes-list')
+
+  const loadTributes = () => {
+    if (!tributeGrid) return Promise.resolve();
+    return fetch('/api/tributes-list')
       .then(res => res.ok ? res.json() : Promise.reject(new Error('bad status')))
       .then(data => {
         const tributes = Array.isArray(data.tributes) ? data.tributes : [];
+        tributeGrid.innerHTML = '';
         tributeGrid.removeAttribute('data-loading');
         if (tributes.length === 0) {
           tributeGrid.setAttribute('data-loading', 'Be the first to leave a tribute.');
@@ -98,9 +101,13 @@
         });
       })
       .catch(() => {
-        tributeGrid.setAttribute('data-loading', 'Could not load tributes right now.');
+        if (tributeGrid.children.length === 0) {
+          tributeGrid.setAttribute('data-loading', 'Could not load tributes right now.');
+        }
       });
-  }
+  };
+
+  loadTributes();
 
   // ---------- TRIBUTE MODAL OPEN/CLOSE ----------
   const tributeModal   = document.getElementById('tribute-modal');
@@ -155,8 +162,9 @@
         const data = await res.json().catch(() => ({}));
 
         if (res.ok) {
-          statusEl.textContent = data.message || 'Thank you! Your tribute is awaiting review.';
+          statusEl.textContent = data.message || 'Thank you for sharing your tribute.';
           tributeForm.reset();
+          loadTributes();
           setTimeout(() => {
             if (tributeModal) {
               tributeModal.classList.remove('is-open');

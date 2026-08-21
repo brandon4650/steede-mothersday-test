@@ -1,7 +1,7 @@
 // functions/tribute-submit.js
 // Live at /api/tribute-submit
-// Receives a tribute wall submission and stores it in the site database
-// as a pending row, awaiting moderation before it appears publicly.
+// Receives a tribute wall submission and stores it in the site database.
+// Auto-approved on submit, so it shows on the wall right away.
 
 const MAX_NAME_LEN = 80;
 const MAX_QUOTE_LEN = 500;
@@ -33,10 +33,7 @@ export default async (request, { db }) => {
   const quoteText = typeof body.quote_text === "string" ? body.quote_text.trim() : "";
 
   if (!displayName || !quoteText) {
-    return json(400, {
-      error: "display_name and quote_text are required",
-      debug: { bodyType: typeof request.body, receivedKeys: body && typeof body === "object" ? Object.keys(body) : null },
-    });
+    return json(400, { error: "display_name and quote_text are required" });
   }
   if (displayName.length > MAX_NAME_LEN) {
     return json(400, { error: `display_name must be ${MAX_NAME_LEN} characters or fewer` });
@@ -46,9 +43,9 @@ export default async (request, { db }) => {
   }
 
   await db.run(
-    "INSERT INTO tributes (display_name, quote_text, status, source) VALUES (?, ?, 'pending', 'form')",
+    "INSERT INTO tributes (display_name, quote_text, status, source) VALUES (?, ?, 'approved', 'form')",
     [displayName, quoteText]
   );
 
-  return json(200, { ok: true, message: "Thank you. Your tribute will appear after a quick review." });
+  return json(200, { ok: true, message: "Thank you for sharing your tribute." });
 };
