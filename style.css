@@ -731,22 +731,83 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
 @media (max-width: 880px) { .tribute__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 540px) { .tribute__grid { grid-template-columns: 1fr; } }
 
-/* ---------- TRIBUTE FORM ---------- */
-.tribute-form {
-  max-width: 520px;
+/* ---------- TRIBUTE CTA + MODAL ---------- */
+.tribute-cta {
   margin: 48px auto 0;
-  padding: 32px;
-  border-radius: var(--radius-md);
-  background: #fff;
-  box-shadow: var(--shadow-sm);
   text-align: center;
 }
-.tribute-form__lede {
+.tribute-cta__lede {
   font-family: var(--serif);
   font-style: italic;
   font-size: 1.1rem;
   color: var(--rose-deep);
-  margin-bottom: 20px;
+  margin-bottom: 18px;
+}
+
+.tribute-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .25s ease, visibility .25s ease;
+}
+.tribute-modal.is-open {
+  visibility: visible;
+  opacity: 1;
+}
+.tribute-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(58, 34, 48, 0.55);
+  backdrop-filter: blur(2px);
+}
+.tribute-modal__panel {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 36px 32px 28px;
+  transform: translateY(16px) scale(.98);
+  transition: transform .25s ease;
+}
+.tribute-modal.is-open .tribute-modal__panel {
+  transform: translateY(0) scale(1);
+}
+.tribute-modal__panel h3 {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  color: var(--rose-deep);
+  text-align: center;
+  margin-bottom: 22px;
+}
+.tribute-modal__close {
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 32px; height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: #fff2f5;
+  color: var(--ink-soft);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tribute-modal__close:hover { background: var(--rose); color: #fff; }
+
+.tribute-form {
+  text-align: center;
 }
 .tribute-form__row {
   text-align: left;

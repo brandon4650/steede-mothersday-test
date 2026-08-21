@@ -68,6 +68,32 @@
     });
   }
 
+  // ---------- TRIBUTE MODAL OPEN/CLOSE ----------
+  const tributeModal   = document.getElementById('tribute-modal');
+  const tributeOpenBtn = document.getElementById('tribute-open-btn');
+  if (tributeModal && tributeOpenBtn) {
+    const openModal = () => {
+      tributeModal.classList.add('is-open');
+      tributeModal.setAttribute('aria-hidden', 'false');
+      const firstField = tributeModal.querySelector('#tribute-name');
+      if (firstField) firstField.focus();
+      document.body.style.overflow = 'hidden';
+    };
+    const closeModal = () => {
+      tributeModal.classList.remove('is-open');
+      tributeModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    };
+
+    tributeOpenBtn.addEventListener('click', openModal);
+    tributeModal.querySelectorAll('[data-tribute-close]').forEach(el => {
+      el.addEventListener('click', closeModal);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && tributeModal.classList.contains('is-open')) closeModal();
+    });
+  }
+
   // ---------- TRIBUTE FORM SUBMISSION ----------
   const tributeForm = document.getElementById('tribute-form');
   if (tributeForm) {
@@ -97,6 +123,14 @@
         if (res.ok) {
           statusEl.textContent = data.message || 'Thank you! Your tribute is awaiting review.';
           tributeForm.reset();
+          setTimeout(() => {
+            if (tributeModal) {
+              tributeModal.classList.remove('is-open');
+              tributeModal.setAttribute('aria-hidden', 'true');
+              document.body.style.overflow = '';
+            }
+            statusEl.textContent = '';
+          }, 1800);
         } else {
           statusEl.textContent = data.error || 'Something went wrong. Please try again.';
         }

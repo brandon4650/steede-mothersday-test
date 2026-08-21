@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Dancing+Script:wght@500;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=2" />
+  <link rel="stylesheet" href="style.css?v=3" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23e75480' d='M12 21s-7-4.5-9.5-9C.5 8 3 4 7 4c2 0 3.5 1 5 3 1.5-2 3-3 5-3 4 0 6.5 4 4.5 8C19 16.5 12 21 12 21z'/%3E%3C/svg%3E" />
 </head>
 <body>
@@ -335,8 +335,22 @@
         </figure>
       </div>
 
+      <div class="tribute-cta">
+        <p class="tribute-cta__lede">Add your own bouquet to the wall.</p>
+        <button type="button" class="btn btn--primary" id="tribute-open-btn">
+          <span>Share a Tribute</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRIBUTE FORM MODAL -->
+  <div class="tribute-modal" id="tribute-modal" aria-hidden="true">
+    <div class="tribute-modal__backdrop" data-tribute-close></div>
+    <div class="tribute-modal__panel" role="dialog" aria-modal="true" aria-labelledby="tribute-modal-title">
+      <button type="button" class="tribute-modal__close" data-tribute-close aria-label="Close">&times;</button>
+      <h3 id="tribute-modal-title">Honor Your Mom</h3>
       <form id="tribute-form" class="tribute-form" novalidate>
-        <p class="tribute-form__lede">Add your own bouquet to the wall.</p>
         <div class="tribute-form__row">
           <label for="tribute-name">Your name or @handle</label>
           <input id="tribute-name" name="display_name" type="text" maxlength="80" placeholder="@yourhandle" required />
@@ -349,7 +363,7 @@
         <p class="tribute-form__status" role="status" aria-live="polite"></p>
       </form>
     </div>
-  </section>
+  </div>
 
   <!-- CHARITY CTA -->
   <section class="charity section">
@@ -416,6 +430,6 @@
     </p>
   </footer>
 
-  <script src="script.js?v=2"></script>
+  <script src="script.js?v=3"></script>
 </body>
 </html>
