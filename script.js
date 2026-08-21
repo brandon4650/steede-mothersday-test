@@ -68,6 +68,40 @@
     });
   }
 
+  // ---------- TRIBUTE WALL (rendered from the database) ----------
+  const tributeGrid = document.getElementById('tribute-grid');
+  if (tributeGrid) {
+    fetch('/api/tributes-list')
+      .then(res => res.ok ? res.json() : Promise.reject(new Error('bad status')))
+      .then(data => {
+        const tributes = Array.isArray(data.tributes) ? data.tributes : [];
+        tributeGrid.removeAttribute('data-loading');
+        if (tributes.length === 0) {
+          tributeGrid.setAttribute('data-loading', 'Be the first to leave a tribute.');
+          return;
+        }
+        tributes.forEach(t => {
+          const figure = document.createElement('figure');
+          if (t.image_url) {
+            const img = document.createElement('img');
+            img.src = t.image_url;
+            img.alt = '';
+            img.loading = 'lazy';
+            figure.appendChild(img);
+          } else {
+            figure.classList.add('is-text');
+          }
+          const figcaption = document.createElement('figcaption');
+          figcaption.textContent = `"${t.quote_text}" · ${t.display_name}`;
+          figure.appendChild(figcaption);
+          tributeGrid.appendChild(figure);
+        });
+      })
+      .catch(() => {
+        tributeGrid.setAttribute('data-loading', 'Could not load tributes right now.');
+      });
+  }
+
   // ---------- TRIBUTE MODAL OPEN/CLOSE ----------
   const tributeModal   = document.getElementById('tribute-modal');
   const tributeOpenBtn = document.getElementById('tribute-open-btn');

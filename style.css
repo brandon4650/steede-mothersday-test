@@ -731,6 +731,31 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
 @media (max-width: 880px) { .tribute__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 540px) { .tribute__grid { grid-template-columns: 1fr; } }
 
+.tribute__grid:empty::before {
+  content: attr(data-loading);
+  grid-column: 1 / -1;
+  text-align: center;
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--ink-soft);
+  padding: 40px 0;
+}
+.tribute__grid figure.is-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  background: linear-gradient(155deg, #ffe2ec 0%, #f7b6c8 100%);
+}
+.tribute__grid figure.is-text figcaption {
+  position: static;
+  background: none;
+  color: var(--ink);
+  font-size: 1.05rem;
+  text-align: center;
+  padding: 0;
+}
+
 /* ---------- TRIBUTE CTA + MODAL ---------- */
 .tribute-cta {
   margin: 48px auto 0;
