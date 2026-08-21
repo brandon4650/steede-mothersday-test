@@ -19,12 +19,24 @@ export default async (request, { db }) => {
     return json(405, { error: "Method not allowed" });
   }
 
-  const body = request.body || {};
+  let body = request.body;
+  if (typeof body === "string") {
+    try {
+      body = JSON.parse(body);
+    } catch {
+      body = {};
+    }
+  }
+  body = body || {};
+
   const displayName = typeof body.display_name === "string" ? body.display_name.trim() : "";
   const quoteText = typeof body.quote_text === "string" ? body.quote_text.trim() : "";
 
   if (!displayName || !quoteText) {
-    return json(400, { error: "display_name and quote_text are required" });
+    return json(400, {
+      error: "display_name and quote_text are required",
+      debug: { bodyType: typeof request.body, receivedKeys: body && typeof body === "object" ? Object.keys(body) : null },
+    });
   }
   if (displayName.length > MAX_NAME_LEN) {
     return json(400, { error: `display_name must be ${MAX_NAME_LEN} characters or fewer` });
